@@ -1,5 +1,7 @@
 # [курс] Android Fundamentals
 
+[![Join the chat at https://gitter.im/Hackafe/android-fundamentals-course](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Hackafe/android-fundamentals-course?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Курсът е безплатен и се провежда всяка сряда в [големия лаб](http://www.hackafe.org/#!/contacts) на Hackafe.
 
 Актуална информация за курса и работилниците може да намерите в [Trello](https://trello.com/b/s8gaph8P/android-fundamentals-course).
