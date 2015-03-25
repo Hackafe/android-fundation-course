@@ -58,7 +58,7 @@ public class ForecastFragment extends Fragment {
 
              Forecast forecast = (Forecast) adapter.getItem(position);
              long day = forecast.timestamp;
-                Toast.makeText(getActivity(), "Day: "+position + " day: " + day, Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "Day: "+position + " day: " + day, Toast.LENGTH_SHORT).show();
             }
         });
 
