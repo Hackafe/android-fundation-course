@@ -1,0 +1,5 @@
+<root>
+    <item name='android.support.v7.widget.ShareActionProvider'>
+        <annotation name='java.lang.annotation.Deprecated' />
+    </item>
+</root>
