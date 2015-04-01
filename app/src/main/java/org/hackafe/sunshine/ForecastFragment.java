@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,6 +61,10 @@ public class ForecastFragment extends Fragment {
                 intent.putExtra(Intent.EXTRA_TEXT, item.desc);
                 startActivity(intent);
 
+
+             Forecast forecast = (Forecast) adapter.getItem(position);
+             long day = forecast.timestamp;
+                Toast.makeText(getActivity(), "Day: "+position + " day: " + day, Toast.LENGTH_SHORT);
             }
         });
 
