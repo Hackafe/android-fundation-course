@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,13 +55,13 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+             Forecast forecast = (Forecast) adapter.getItem(position);
+             long day = forecast.timestamp;
+                Toast.makeText(getActivity(), "Day: "+position + " day: " + day, Toast.LENGTH_SHORT).show();
             }
         });
 
-        final EditText countInput = (EditText)rootView.findViewById(R.id.countInput);
-
-
-        Button addMoreBtn = (Button) rootView.findViewById(R.id.btn_add_more_items);
 
 
 
