@@ -20,8 +20,8 @@ public class DayForecast extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
 
-        long timestamp = getIntent().getLongExtra("timestamp", 0);
-        String desc = getIntent().getStringExtra("desc");
+        long timestamp = getIntent().getLongExtra("TIMESTAMP", 0);
+        String desc = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
         tvTimestamp = (TextView) findViewById(R.id.timestamp);
         tvDesc = (TextView) findViewById(R.id.description);
@@ -29,15 +29,6 @@ public class DayForecast extends ActionBarActivity {
         tvTimestamp.setText(String.valueOf(timestamp));
         tvDesc.setText(desc);
 
-
-        //Make a string from the HashTag and the weather forecast
-        String shareHashTag = "#SunshineApp " + tvDesc.getText();
-
-        //Create Intent
-        shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareHashTag);
     }
 
 
