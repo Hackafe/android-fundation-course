@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 public class DayForecast extends ActionBarActivity {
 
-    Intent shareIntent;
     private TextView tvTimestamp, tvDesc;
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
