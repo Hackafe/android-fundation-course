@@ -62,10 +62,6 @@ public class ForecastFragment extends Fragment {
             }
         });
 
-        final EditText countInput = (EditText)rootView.findViewById(R.id.countInput);
-
-
-        Button addMoreBtn = (Button) rootView.findViewById(R.id.btn_add_more_items);
 
 
 
