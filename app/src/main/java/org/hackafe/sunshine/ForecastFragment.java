@@ -1,5 +1,6 @@
 package org.hackafe.sunshine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -30,6 +28,10 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    public static final String EXTRA_TEXT="extra_text";
+    public static final String TIMESTAMP="timestamp";
+    public static final String DAY_TEMP="daytemp";
+
     public ForecastFragment() {
     }
 
@@ -43,7 +45,7 @@ public class ForecastFragment extends Fragment {
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String data = getForecast();
-        List<Forecast> forecast = parseForecast(data);
+        final List<Forecast> forecast = parseForecast(data);
 
 
         final ForecastAdapter adapter = new ForecastAdapter(inflater, forecast);
@@ -54,16 +56,14 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Intent i = new Intent(getActivity(), DayForecast.class);
+                i.putExtra(ForecastFragment.EXTRA_TEXT, forecast.get(position).desc);
+                i.putExtra(ForecastFragment.TIMESTAMP, String.valueOf(forecast.get(position).timestamp));
+                i.putExtra(ForecastFragment.DAY_TEMP, String.valueOf(forecast.get(position).daytemp));
+                startActivity(i);
+
             }
         });
-
-        final EditText countInput = (EditText)rootView.findViewById(R.id.countInput);
-
-
-        Button addMoreBtn = (Button) rootView.findViewById(R.id.btn_add_more_items);
-
-
-
 
         return rootView;
     }
@@ -85,6 +85,7 @@ public class ForecastFragment extends Fragment {
                 // extract "day" temperature
                 double dayTemp = temp.getDouble("day");
 
+
                 // get "weather" array
                 JSONArray weather = forecastObj.getJSONArray("weather");
                 // get 1st weather
@@ -98,7 +99,8 @@ public class ForecastFragment extends Fragment {
                 String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt*1000));
 
                 Forecast forecast = new Forecast();
-                forecast.desc = String.format("%s - %s   %.1f°C", dateStr, description, dayTemp);
+                forecast.daytemp=  dayTemp;
+                forecast.desc = String.format("%s - %s", dateStr, description);
                 forecast.timestamp = dt;
                 forecastList.add(forecast);
                 Log.d("Sunshine", "forecast = "+forecast);

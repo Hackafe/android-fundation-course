@@ -36,7 +36,7 @@ public class ForecastAdapter extends BaseAdapter {
 
         TextView label = (TextView) rootRowView.findViewById(R.id.list_item_forecast_listview);
         Forecast forecast = daysForecastList.get(position);
-        label.setText(forecast.desc);
+        label.setText(forecast.desc+ " " + forecast.daytemp + " °C");
 
         return rootRowView;
     }
