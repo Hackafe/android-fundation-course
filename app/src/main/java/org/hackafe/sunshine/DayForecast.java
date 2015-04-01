@@ -1,17 +1,32 @@
 package org.hackafe.sunshine;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class DayForecast extends ActionBarActivity {
+
+    private TextView tvTimestamp, tvDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
+
+        long timestamp = getIntent().getLongExtra("TIMESTAMP", 0);
+        String desc = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+
+        tvTimestamp = (TextView) findViewById(R.id.timestamp);
+        tvDesc = (TextView) findViewById(R.id.description);
+
+        tvTimestamp.setText(String.valueOf(timestamp));
+        tvDesc.setText(desc);
+
     }
 
 
