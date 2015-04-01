@@ -1,5 +1,6 @@
 package org.hackafe.sunshine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TooManyListenersException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -53,16 +56,24 @@ public class ForecastFragment extends Fragment {
         collection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Forecast forc = (Forecast) adapter.getItem(position);
+                String forcStr = forc.desc;
+                Long forcDay = forc.timestamp;
 
+                Intent intent = new Intent(getActivity(),
+                        DayForecast.class);
+                intent.putExtra("EXTRA_TEXT", forcStr);
+                intent.putExtra("TIMESTAMP", forcDay);
+                startActivity(intent);
+
+                Toast.makeText(getActivity(), forcStr + " "+forcDay, Toast.LENGTH_LONG).show();
             }
         });
 
-        final EditText countInput = (EditText)rootView.findViewById(R.id.countInput);
+        final EditText countInput = (EditText) rootView.findViewById(R.id.countInput);
 
 
         Button addMoreBtn = (Button) rootView.findViewById(R.id.btn_add_more_items);
-
-
 
 
         return rootView;
@@ -76,7 +87,7 @@ public class ForecastFragment extends Fragment {
             // get "list" field as array
             JSONArray list = obj.getJSONArray("list");
             // iterate array and get forecast
-            for (int i=0; i<list.length(); i++) {
+            for (int i = 0; i < list.length(); i++) {
                 // get "i"th forecast
                 JSONObject forecastObj = list.getJSONObject(i);
 
@@ -95,13 +106,13 @@ public class ForecastFragment extends Fragment {
 
                 // extract "dt" date time in unix epoch format
                 long dt = forecastObj.getLong("dt");
-                String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt*1000));
+                String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt * 1000));
 
                 Forecast forecast = new Forecast();
                 forecast.desc = String.format("%s - %s   %.1f°C", dateStr, description, dayTemp);
                 forecast.timestamp = dt;
                 forecastList.add(forecast);
-                Log.d("Sunshine", "forecast = "+forecast);
+                Log.d("Sunshine", "forecast = " + forecast);
             }
             return forecastList;
         } catch (Throwable t) {
