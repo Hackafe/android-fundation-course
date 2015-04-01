@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- opens a subscreen of settings -->
+    <PreferenceScreen
+        android:key="button_unit_category_key"
+        android:title="Units"
+        android:persistent="false">
+
+        <PreferenceCategory
+            android:key="button_unit_provider_key"
+            android:title="Units of temperature"
+            android:persistent="false">
+
+        <!-- opens another nested subscreen -->
+        <CheckBoxPreference
+            android:key="celsius_key"
+            android:title="Celsius (°C)"
+            android:defaultValue="true"
+            android:persistent="true"/>
+
+        <CheckBoxPreference
+            android:key="fahrenheit_key"
+            android:title="Fahrenheit (°F)"
+            android:defaultValue="false"
+            android:persistent="true"/>
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+</PreferenceScreen>
+
+
+
