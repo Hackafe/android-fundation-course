@@ -30,7 +30,6 @@ public class ForecastFragment extends Fragment {
 
     public static final String EXTRA_TEXT="extra_text";
     public static final String TIMESTAMP="timestamp";
-    public static final String DAY_TEMP="daytemp";
 
     public ForecastFragment() {
     }
@@ -59,7 +58,6 @@ public class ForecastFragment extends Fragment {
                 Intent i = new Intent(getActivity(), DayForecast.class);
                 i.putExtra(ForecastFragment.EXTRA_TEXT, forecast.get(position).desc);
                 i.putExtra(ForecastFragment.TIMESTAMP, String.valueOf(forecast.get(position).timestamp));
-                i.putExtra(ForecastFragment.DAY_TEMP, String.valueOf(forecast.get(position).daytemp));
                 startActivity(i);
 
             }
@@ -99,8 +97,7 @@ public class ForecastFragment extends Fragment {
                 String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt*1000));
 
                 Forecast forecast = new Forecast();
-                forecast.daytemp=  dayTemp;
-                forecast.desc = String.format("%s - %s", dateStr, description);
+                forecast.desc = String.format("%s - %s %.1f C" , dateStr, description, dayTemp);
                 forecast.timestamp = dt;
                 forecastList.add(forecast);
                 Log.d("Sunshine", "forecast = "+forecast);

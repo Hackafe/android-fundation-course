@@ -16,7 +16,6 @@ public class DayForecast extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
 
-
     }
 
 

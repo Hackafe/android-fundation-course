@@ -6,5 +6,4 @@ package org.hackafe.sunshine;
 public class Forecast {
     public long timestamp;
     public String desc;
-    public double daytemp;
 }
