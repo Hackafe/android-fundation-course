@@ -10,30 +10,11 @@ import android.widget.Toast;
 
 public class DayForecast extends ActionBarActivity {
 
-    private android.support.v7.widget.ShareActionProvider mShareActionProvider;
-    private String data;
-    private String timestamp;
-    private double dayTemp;
-    //private String unit;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
-
-        if ((data = getIntent().getStringExtra(ForecastFragment.EXTRA_TEXT)) == null)
-            Toast.makeText(getApplicationContext(), "No forecast", Toast.LENGTH_LONG).show();
-        if ((timestamp = getIntent().getStringExtra(ForecastFragment.TIMESTAMP)) == null)
-            Toast.makeText(getApplicationContext(), "No timestamp", Toast.LENGTH_LONG).show();
-
-        dayTemp = Double.parseDouble(getIntent().getStringExtra(ForecastFragment.DAY_TEMP));
-
-        TextView dataTextView = (TextView) findViewById(R.id.data_tv);
-        TextView timestampTextView = (TextView) findViewById(R.id.timestamp_tv);
-
-        dataTextView.setText(data + " " + dayTemp + " °C");
-        timestampTextView.setText(timestamp);
 
 
     }
