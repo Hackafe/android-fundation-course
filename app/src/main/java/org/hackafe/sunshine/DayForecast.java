@@ -22,10 +22,13 @@ public class DayForecast extends ActionBarActivity {
     private double dayTemp;
     private String unit;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
+
 
         if ((data = getIntent().getStringExtra(ForecastFragment.EXTRA_TEXT)) == null)
             Toast.makeText(getApplicationContext(), "No forecast", Toast.LENGTH_LONG).show();
@@ -34,21 +37,42 @@ public class DayForecast extends ActionBarActivity {
 
         dayTemp = Double.parseDouble(getIntent().getStringExtra(ForecastFragment.DAY_TEMP));
 
+
+
         TextView dataTextView = (TextView) findViewById(R.id.data_tv);
         TextView timestampTextView = (TextView) findViewById(R.id.timestamp_tv);
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         unit = sharedPreferences.getString(getResources().getString(R.string.temp_unit), "Celsius");
 
-        if(unit.equals("Celsius"))
+        if (unit.equals("Celsius"))
             dataTextView.setText(data + " " + dayTemp + " °C");
         else {
-              double fTemp = 1.8 * dayTemp + 32;
-              dataTextView.setText(data + " " + fTemp + " °F");
-             }
-
-         timestampTextView.setText(timestamp);
+            double fTemp = 1.8 * dayTemp + 32;
+            dataTextView.setText(data + " " + fTemp + " °F");
         }
+
+        timestampTextView.setText(timestamp);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView dataTextView = (TextView) findViewById(R.id.data_tv);
+        TextView timestampTextView = (TextView) findViewById(R.id.timestamp_tv);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        unit = sharedPreferences.getString(getResources().getString(R.string.temp_unit), "Celsius");
+
+        if (unit.equals("Celsius"))
+            dataTextView.setText(data + " " + dayTemp + " °C");
+        else {
+            double fTemp = 1.8 * dayTemp + 32;
+            dataTextView.setText(data + " " + fTemp + " °F");
+        }
+
+        timestampTextView.setText(timestamp);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
