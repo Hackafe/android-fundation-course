@@ -1,9 +1,13 @@
 package org.hackafe.sunshine;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.Date;
 
 
 public class DayForecast extends ActionBarActivity {
@@ -12,6 +16,15 @@ public class DayForecast extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_forecast);
+
+        Intent intent = getIntent();
+        String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
+        Long forecastDate =  intent.getLongExtra("TIMESTAMP", 1);
+        Date date = new Date(forecastDate * 1000);
+        TextView dayForecast = (TextView) findViewById(R.id.dayForecast);
+        TextView dayTimestamp = (TextView) findViewById(R.id.dayTimestamp);
+        dayForecast.setText(forecast);
+        dayTimestamp.setText(date.toString());
     }
 
 
