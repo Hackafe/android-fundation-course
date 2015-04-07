@@ -1,5 +1,9 @@
 package org.hackafe.sunshine;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -24,10 +28,14 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
+    SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 
         if (savedInstanceState == null) {
@@ -54,6 +62,11 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_location_map) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + mSharedPreferences.getString("pref_location", "Plovdiv").toUpperCase()));
+            startActivity(intent);
             return true;
         }
 
