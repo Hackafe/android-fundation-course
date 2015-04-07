@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAppearance="?android:textAppearanceLarge"
-    android:text="Weather forecast">
+    android:text="Weather forecast"
+    android:padding="8dp">
 
 </TextView>
