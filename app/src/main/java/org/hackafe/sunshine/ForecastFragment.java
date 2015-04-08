@@ -1,8 +1,11 @@
 package org.hackafe.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,37 +34,21 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    private ListView collection;
+    ForecastAdapter adapter;
+
     public ForecastFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("Sunshine", "----------------------------------------------------");
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy
-                .Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        String data = getForecast();
-        List<Forecast> forecast = parseForecast(data);
+        collection = (ListView) rootView.findViewById(R.id.container);
 
-
-        final ForecastAdapter adapter = new ForecastAdapter(inflater, forecast);
-        final ListView collection = (ListView) rootView.findViewById(R.id.container);
-        collection.setAdapter(adapter);
-
-        collection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Forecast item = (Forecast) adapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DayForecast.class);
-                intent.putExtra("TIMESTAMP", item.timestamp);
-                intent.putExtra(Intent.EXTRA_TEXT, item.desc);
-                startActivity(intent);
-
-            }
-        });
 
         final EditText countInput = (EditText)rootView.findViewById(R.id.countInput);
 
@@ -72,6 +59,50 @@ public class ForecastFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        collection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Forecast item = (Forecast) adapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DayForecast.class);
+                intent.putExtra("timestamp", item.timestamp);
+                intent.putExtra("desc", item.desc);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new GetForecastDataTask().execute();
+    }
+
+    class GetForecastDataTask extends AsyncTask<Void, Void, List<Forecast>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<Forecast> doInBackground(Void... params) {
+            List<Forecast> forecast = parseForecast(getForecast());
+            return forecast;
+        }
+
+        @Override
+        protected void onPostExecute(List<Forecast> forecast) {
+            super.onPostExecute(forecast);
+            adapter = new ForecastAdapter(LayoutInflater.from(getActivity()), forecast);
+            collection.setAdapter(adapter);
+        }
     }
 
     private List<Forecast> parseForecast(String data) {
@@ -104,7 +135,15 @@ public class ForecastFragment extends Fragment {
                 String dateStr = SimpleDateFormat.getDateInstance().format(new Date(dt*1000));
 
                 Forecast forecast = new Forecast();
-                forecast.desc = String.format("%s - %s   %.1f°C", dateStr, description, dayTemp);
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                String tempUnits = sharedPrefs.getString(SettingsActivity.KEY_PREF_TEMP_UNITS, "");
+                if (tempUnits.equals(SettingsActivity.FAHRENHEIT)) {
+                    dayTemp = (dayTemp * 1.8) + 32;
+                    forecast.desc = String.format("%s - %s  %.1f°F", dateStr, description, dayTemp);
+                } else {
+                    forecast.desc = String.format("%s - %s  %.1f°C", dateStr, description, dayTemp);
+                }
                 forecast.timestamp = dt;
                 forecastList.add(forecast);
                 Log.d("Sunshine", "forecast = "+forecast);
