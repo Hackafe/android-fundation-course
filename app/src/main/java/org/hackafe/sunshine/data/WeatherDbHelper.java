@@ -13,7 +13,7 @@ import org.hackafe.sunshine.Forecast;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "weather.db";
-    static final int DATABASE_VERSION = 4;
+    static final int DATABASE_VERSION = 8;
 
     public WeatherDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,16 +21,20 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS forecast;");
+        System.out.println("onCreate");
+        System.out.println("Drop");
+        db.execSQL("DROP TABLE IF EXISTS forecasts;");
+        System.out.println("Create");
         db.execSQL("CREATE TABLE \"forecasts\" (\n" +
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "weather TEXT NOT NULL," +
-                "fordate INTEGER NOT NULL" +
-                ");\n");
+                "fordate INTEGER NOT NULL, " +
+                " UNIQUE(fordate) ON CONFLICT IGNORE);\n");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        System.out.println("onUpgrade");
         onCreate(db);
     }
 

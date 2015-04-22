@@ -1,0 +1,17 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch hw6.0419
+# Your branch is up-to-date with 'upstream/lesson6-sqlite'.
+#
+# Changes to be committed:
+#	modified:   .idea/modules.xml
+#	modified:   app/app.iml
+#	modified:   app/src/androidTest/java/org/hackafe/sunshine/data/TestDatabase.java
+#	modified:   app/src/main/java/org/hackafe/sunshine/data/WeatherDbHelper.java
+#	new file:   hw6-0419.iml
+#
+# Changes not staged for commit:
+#	deleted:    android-fundamentals-course.iml
+#
+

@@ -27,6 +27,10 @@ public class TestDatabase extends AndroidTestCase {
         db = helper.getReadableDatabase();
     }
 
+
+
+
+
     public void _testDatabaseCanOpenWritableWhileOpenReadable() throws Exception {
 
         new Thread(new Runnable() {
@@ -54,7 +58,7 @@ public class TestDatabase extends AndroidTestCase {
         // TODO check that database can be opened for writing while there is open for reading and vice verse
     }
 
-    public void testHelperIsNotNull() throws Exception {
+    public void _testHelperIsNotNull() throws Exception {
         assertNotNull(helper);
     }
 
@@ -64,7 +68,7 @@ public class TestDatabase extends AndroidTestCase {
         assertEquals(WeatherDbHelper.DATABASE_VERSION, db.getVersion());
     }
 
-    public void testSqlErrorProducesException() throws Exception {
+    public void _testSqlErrorProducesException() throws Exception {
         try {
             Cursor c = db.rawQuery("hackafe is the best", null);
             fail("sql garbage does't produce exception!");
@@ -73,7 +77,7 @@ public class TestDatabase extends AndroidTestCase {
         }
     }
 
-    public void testTablesExists() throws Exception {
+    public void _testTablesExists() throws Exception {
         Cursor c = db.rawQuery("select name from sqlite_master where type = 'table' ", null);
 
         boolean found = false;
@@ -87,7 +91,7 @@ public class TestDatabase extends AndroidTestCase {
         assertTrue("table forecast was not found!", found);
     }
 
-    public void testForecastHasAllColumn() throws Exception {
+    public void _testForecastHasAllColumn() throws Exception {
         HashSet<String> expectedColumn = new HashSet<>();
         expectedColumn.add(WeatherContract.ForecastTable._ID);
         expectedColumn.add(WeatherContract.ForecastTable.COLUMN_DATE);
@@ -105,7 +109,7 @@ public class TestDatabase extends AndroidTestCase {
         assertEquals(0, expectedColumn.size());
     }
 
-    public void testSaveNewForecast() throws Exception {
+    public void _testSaveNewForecast() throws Exception {
         long timestamp = new Date().getTime();
         String forecastStr = "sunny all day long with chance for pizza";
         Forecast forecast = new Forecast(timestamp,
@@ -139,8 +143,63 @@ public class TestDatabase extends AndroidTestCase {
         assertEquals(timestamp, cursor.getLong(WeatherContract.ForecastTable.INDEX_DATE));
     }
 
-    // TODO validate only one record per day (try to insert 2 for a single day)
-    // TODO validate bad data
-    // TODO validate we have a unique id for the inserted record
 
+    // TODO validate only one record per day (try to insert 2 for a single day)
+    public void testSqlInsertTwoRecordsForOneDay() throws Exception {
+        System.out.println("testSqlInsertTwoRecordsForOneDay");
+        long timestamp = new Date().getTime();
+        String forecastStr = "two records for one day test";
+        Forecast forecast = new Forecast(timestamp,
+                forecastStr);
+        //Insert First Record
+        System.out.println("Insert First Record");
+        helper.saveNewForecast(forecast);
+
+        //Insert Second Record
+        System.out.println("Insert Second Record");
+        helper.saveNewForecast(forecast);
+
+        Cursor cursor = db.query(
+                // table name
+                WeatherContract.ForecastTable.TABLE_NAME,
+                // select field
+                WeatherContract.ForecastTable.PROJECTION,
+                // where clause
+                WeatherContract.ForecastTable.COLUMN_DATE+" = ?",
+                // where argument
+                new String[]{Long.toString(timestamp)},
+                // group by
+                null,
+                // having
+                null,
+                // order by
+                null
+        );
+        System.out.println("Cursor rows: " + cursor.getCount());
+        // check for single record
+        assertEquals(2, cursor.getCount());
+
+
+    }
+
+    // TODO validate bad data
+    public void testTimeDataValid() throws Exception {
+        long timestamp = 0;
+       // timestamp= new Date().getTime();
+        assertNotNull(timestamp);
+        if (timestamp == 0){
+            fail();
+        }
+    }
+    public void testforecastStrValid() throws Exception {
+
+        String forecastStr = null;
+        //  forecastStr = "sunny all day long with chance for pizza";
+
+        assertNotNull(forecastStr);
+
+
+    }
+    // TODO validate we have a unique id for the inserted record
+//???????????
 }
